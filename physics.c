@@ -42,6 +42,16 @@ void* checkCollisions(void* params)
 		return;
 	}
 	pthread_rwlock_unlock(&aiLock);
+
+
+
+	if(ball.y == 0 || ball. + ball.height == HEIGHT) 
+	{
+		pthread_rwlock_unlock(&ballLock);
+		changeDirection( 1, -1);
+		return;
+	}
+	pthread_rwlock_unlock(&ballLock);
 }
 
 
@@ -50,4 +60,5 @@ void changeDirection(int dx, int dy)
 	pthread_rwlock_wrlock(&ballLock);
 	ball.dx *= dx;
 	ball.dy *= dy;
+	pthread_rwlock_unlock(&ballLock);
 }
