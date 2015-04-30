@@ -1,0 +1,5 @@
+#!/bin/bash
+
+gcc -c physics.c graphics.c gameLogic.c userInput.c
+
+gcc -o Pong main.c physics.o graphics.o gameLogic.o userInput.o
