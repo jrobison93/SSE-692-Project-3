@@ -1,6 +1,7 @@
 void *
 DrawBoard (void *arg)
 {
+  printf ("\033[2J");
   int i;
   for (i = 0; i < 30; i++)
     {
