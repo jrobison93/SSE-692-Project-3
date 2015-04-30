@@ -1,5 +1,3 @@
-#include <pthread.h>
-
 void *
 DrawBoard (void *arg)
 {
