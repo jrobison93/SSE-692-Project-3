@@ -26,34 +26,49 @@ main (int argc, char *argv[])
 
   while (true)
     {
-      //clear();
       ch = getch ();
       switch (ch)
 	{
 	case KEY_LEFT:
-	  printw ("Left arrow is pressed\n");
+	case KEY_UP:
+	  //printw ("Left arrow is pressed\n");
+	  player.y++;
 	  break;
 	case KEY_RIGHT:
-	  printw ("Right arrow is pressed\n");
+	case KEY_DOWN:
+	  //printw ("Right arrow is pressed\n");
+	  player.y--;
 	  break;
 	case 'x':
 	  endwin ();
 	  return(1);
 	  break;
 	default:
-	  printw ("The pressed key is ");
-	  attron (A_BOLD);
-	  printw ("%c", ch);
-	  attroff (A_BOLD);
+		screenDraw();
 	}
-      //refresh ();
-      //sleep (1);
     }
   endwin ();
 }
 
 void screenDraw() {
+	//Clear the contents of the window
+	wclear(local_win);
+
+	int i;
 	//Draw paddles
-	//Draw Ball
+	for (i = 0; i < player.height; i++) {
+		mvprintw(starty + player.height, startx + player.x, "||");
+	}
+
+        for (i = 0; i < ai.height; i++) {
+                mvprintw(starty + ai.height, startx + ai.x, "||");
+        }
+
+
+	//Draw ball
+	mvprintw(starty + ball.y, startx + ball.x, "o");
+
+	//Draw screen
 	refresh ();
+	wrefresh(local_win);
 }
