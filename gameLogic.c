@@ -65,7 +65,7 @@ void updateAI()
 		ai.y--;	
 	}
 	pthread_rwlock_unlock(&aiLock);
-	pthread_rwlock_unlock(&aiLock);
+	pthread_rwlock_unlock(&ballLock);
 }
 
 // Updates the game a fixed number of times a second
