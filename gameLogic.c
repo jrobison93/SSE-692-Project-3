@@ -6,11 +6,13 @@ void initializeGame()
 	ball.dx = 1;
 	ball.dy = 1;
 
+	// Initialize the player
 	player.height = HEIGHT / 4;
 	player.width = WIDTH / 20;
 	player.x = 10;
 	player.y = (HEIGHT / 2) - (player.height / 2);
 
+	// Initialize the AI
 	ai.height = HEIGHT / 4;
 	ai.width = WIDTH / 20;
 	ai.x = WIDTH - 10;
@@ -18,7 +20,8 @@ void initializeGame()
 	
 }
 
-void reset()
+// Return the ball to the center of the screen
+void resetBall()
 {
 	pthread_rwlock_wrlock(&ballLock);
 	ball.x = (WIDTH / 2) - (ball.width / 2);
@@ -26,6 +29,7 @@ void reset()
 	pthread_rwlock_unlock(&ballLock);
 }
 
+// Checks the player and ai's scores to see if the game has been won
 int checkGameState()
 {
 	pthread_rwlock_rdlock(&playerLock);
@@ -48,10 +52,29 @@ int checkGameState()
 
 }
 
-void* updateGame(void* params)
+void updateAI()
 {
 	pthread_rwlock_rdlock(&ballLock);
-	if(ball.x < 0)
+	pthread_rwlock_wrlock(&aiLock);
+	if(ball.y > ai.y + ai.height)
+	{
+		ai.y++;
+	}
+	else if(ball.y + ball.height > ai.y)
+	{
+		ai.y--;	
+	}
+	pthread_rwlock_unlock(&aiLock);
+	pthread_rwlock_unlock(&aiLock);
+}
+
+// Updates the game a fixed number of times a second
+void* updateGame(void* params)
+{
+
+	// Sees if the ball has been scored on the by the player
+	pthread_rwlock_rdlock(&ballLock);
+	if(ball.x + ball.width > WIDTH)
 	{
 		pthread_rwlock_unlock(&ballLock);
 		pthread_rwlock_wrlock(&playerLock);
@@ -65,10 +88,11 @@ void* updateGame(void* params)
 		}
 		else
 		{
-			reset();
+			resetBall();
 		}
 	}
-	else if(ball.x + ball.width > WIDTH)
+	// Sees if the ball has been scored by the AI
+	else if(ball.x < 0)
 	{
 		pthread_rwlock_unlock(&ballLock);
 		pthread_rwlock_wrlock(&aiLock);
@@ -83,11 +107,12 @@ void* updateGame(void* params)
 		else
 		{
 			// Continue the game
-			reset();
+			resetBall();
 		}
 	}
 	else
 	{
 		pthread_rwlock_unlock(&ballLock);
+		updateAI();
 	}
 }

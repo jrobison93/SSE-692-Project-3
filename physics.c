@@ -1,3 +1,4 @@
+// Changes the direction of the ball when a collision is detected
 void changeDirection(int dx, int dy)
 {
 	pthread_rwlock_wrlock(&ballLock);
@@ -6,9 +7,11 @@ void changeDirection(int dx, int dy)
 	pthread_rwlock_unlock(&ballLock);
 }
 
-
+// Checks for collisions
 void* checkCollisions(void* params)
 {
+
+	// Checks to see if the ball has collided with the player
 	pthread_rwlock_rdlock(&ballLock);
 	pthread_rwlock_rdlock(&playerLock);
 	if(ball.x == player.x + player.width && ball.y + ball.height >= player.y && 
@@ -30,7 +33,7 @@ void* checkCollisions(void* params)
 	pthread_rwlock_unlock(&playerLock);
 
 
-
+	// Checks to see if the ball has collided with the ai
 	pthread_rwlock_rdlock(&aiLock);
 	if(ball.x == ai.x && ball.y + ball.height >= ai.y && 
 		ball.y <= ai.y + ai.height)
@@ -52,6 +55,7 @@ void* checkCollisions(void* params)
 
 
 
+	// Checks to see if the ball has hit the top or bottom of the screen
 	if(ball.y == 0 || ball.y + ball.height == HEIGHT) 
 	{
 		pthread_rwlock_unlock(&ballLock);

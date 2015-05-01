@@ -36,6 +36,8 @@ pthread_rwlock_t aiLock;
 
 int main(int argc, char* argv[])
 {
+
+	// Necessary Pthread objects for creating threads and read/write locks
 	pthread_t* thread_handles;
 	
 	thread_handles = malloc(4 * sizeof(pthread_t));
