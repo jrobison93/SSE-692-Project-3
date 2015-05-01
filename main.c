@@ -11,7 +11,7 @@ struct Ball
 
 struct Paddle
 {
-	int x, y, width, height;
+	int x, y, width, height, score;
 };
 
 
@@ -24,11 +24,26 @@ int HEIGHT = 30;
 
 int gameOver;
 
+pthread_rwlock_t ballLock;
+pthread_rwlock_t playerLock;
+pthread_rwlock_t aiLock;
+
+
+#include "physics.c"
+#include "graphics.c"
+#include "userInput.c"
+#include "gameLogic.c"
+
 int main(int argc, char* argv[])
 {
 	pthread_t* thread_handles;
 	
 	thread_handles = malloc(4 * sizeof(pthread_t));
+
+	pthread_rwlock_init(&ballLock, NULL);
+	pthread_rwlock_init(&playerLock, NULL);
+	pthread_rwlock_init(&aiLock, NULL);
+
 
 	clock_t t;
 	float timeDiff;
@@ -71,12 +86,13 @@ int main(int argc, char* argv[])
 
 	}
 
+
+	// Clean up the Pthread objects
 	free(thread_handles);
+	pthread_rwlock_destroy(&ballLock);
+	pthread_rwlock_destroy(&playerLock);
+	pthread_rwlock_destroy(&aiLock);
 	return 0;
 }
 
 
-#include "physics.c"
-#include "graphics.c"
-#include "userInput.c"
-#include "gameLogic.c"
