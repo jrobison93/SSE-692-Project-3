@@ -86,7 +86,12 @@ int main(int argc, char* argv[])
 
 	}
 
+
+	// Clean up the Pthread objects
 	free(thread_handles);
+	pthread_rwlock_destroy(&ballLock);
+	pthread_rwlock_destroy(&playerLock);
+	pthread_rwlock_destroy(&aiLock);
 	return 0;
 }
 
