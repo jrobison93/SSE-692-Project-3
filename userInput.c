@@ -1,8 +1,5 @@
-#include <ncurses.h>
-#include <unistd.h>
-
-int
-main (int argc, char *argv[])
+WINDOW*
+initializeBoard ()
 {
   //initializing curses
   initscr ();
@@ -21,9 +18,10 @@ main (int argc, char *argv[])
 	refresh();
 	wrefresh(local_win);
 
+	return local_win;
+}
 
-  int ch;
-
+void* inputCapture() {
   while (true)
     {
       ch = getch ();

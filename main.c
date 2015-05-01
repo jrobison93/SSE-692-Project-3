@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <time.h>
+#include <ncurses.h>
 #include <unistd.h>
 
 struct Ball
@@ -21,6 +22,8 @@ struct Paddle ai;
 
 int WIDTH = 100;
 int HEIGHT = 30;
+int ch;
+WINDOW* local_window;
 
 int gameOver;
 
@@ -52,6 +55,7 @@ int main(int argc, char* argv[])
 	int i;
 
 	initializeGame();
+	local_window = initializeBoard ();
 
 
 	while(gameOver == 0)
