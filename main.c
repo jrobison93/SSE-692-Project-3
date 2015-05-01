@@ -14,6 +14,14 @@ struct Paddle
 	int x, y, width, height;
 };
 
+
+struct Ball ball;
+struct Paddle player;
+struct Paddle ai;
+
+int WIDTH = 100;
+int HEIGHT = 30;
+
 int gameOver;
 
 int main(int argc, char* argv[])
@@ -25,6 +33,9 @@ int main(int argc, char* argv[])
 	clock_t t;
 	float timeDiff;
 	int i;
+
+	initializeGame();
+
 
 	while(gameOver == 0)
 	{
