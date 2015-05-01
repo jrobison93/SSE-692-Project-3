@@ -1,5 +1,3 @@
-#include <pthread.h>
-
 void initializeGame()
 {
 	// Initialize the ball
@@ -20,6 +18,13 @@ void initializeGame()
 	
 }
 
+void reset()
+{
+	pthread_rwlock_wrlock(&ballLock);
+	ball.x = (WIDTH / 2) - (ball.width / 2);
+	ball.y = (HEIGHT / 2) - (ball.height / 2);
+	pthread_rwlock_unlock(&ballLock);
+}
 
 void* updateGame(void* params)
 {
@@ -27,13 +32,13 @@ void* updateGame(void* params)
 	if(ball.x < 0)
 	{
 		pthread_rwlock_unlock(&ballLock);
-		playerScore++;
+		player.score++;
 		reset();
 	}
 	else if(ball.x + ball.width > WIDTH)
 	{
 		pthread_rwlock_unlock(&ballLock);
-		aiScore++;
+		ai.score++;
 		reset();
 	}
 	else
@@ -42,10 +47,3 @@ void* updateGame(void* params)
 	}
 }
 
-void reset()
-{
-	pthread_rwlock_wrlock(&ballLock);
-	ball.x = (WIDTH / 2) - (ball.width / 2);
-	ball.y = (HEIGHT / 2) - (ball.height / 2);
-	pthread_rwlock_unlock(&ballLock);
-}

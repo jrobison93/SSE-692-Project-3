@@ -1,4 +1,11 @@
-#include <pthreads.h>
+void changeDirection(int dx, int dy)
+{
+	pthread_rwlock_wrlock(&ballLock);
+	ball.dx *= dx;
+	ball.dy *= dy;
+	pthread_rwlock_unlock(&ballLock);
+}
+
 
 void* checkCollisions(void* params)
 {
@@ -45,7 +52,7 @@ void* checkCollisions(void* params)
 
 
 
-	if(ball.y == 0 || ball. + ball.height == HEIGHT) 
+	if(ball.y == 0 || ball.y + ball.height == HEIGHT) 
 	{
 		pthread_rwlock_unlock(&ballLock);
 		changeDirection( 1, -1);
@@ -55,10 +62,3 @@ void* checkCollisions(void* params)
 }
 
 
-void changeDirection(int dx, int dy)
-{
-	pthread_rwlock_wrlock(&ballLock);
-	ball.dx *= dx;
-	ball.dy *= dy;
-	pthread_rwlock_unlock(&ballLock);
-}
