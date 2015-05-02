@@ -48,7 +48,7 @@ void* inputCapture() {
   endwin ();
 }
 
-void screenDraw() {
+void* screenDraw() {
 	//Clear the contents of the window
 	wclear(local_win);
 

@@ -29,6 +29,14 @@ void resetBall()
 	pthread_rwlock_unlock(&ballLock);
 }
 
+void updateBall()
+{
+	pthread_rwlock_wrlock(&ballLock);
+	ball.x += ball.dx;
+	ball.y += ball.dy;
+	pthread_rwlock_unlock(&ballLock);
+}
+
 // Checks the player and ai's scores to see if the game has been won
 int checkGameState()
 {
@@ -114,5 +122,6 @@ void* updateGame(void* params)
 	{
 		pthread_rwlock_unlock(&ballLock);
 		updateAI();
+		updateBall();
 	}
 }

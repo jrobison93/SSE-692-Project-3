@@ -65,10 +65,10 @@ int main(int argc, char* argv[])
 
 
 		// Start the threads
-		pthread_create(&thread_handles[0], NULL, /* User Input Function */, NULL);
-		pthread_create(&thread_handles[1], NULL, /* Physics Function */, NULL);
-		pthread_create(&thread_handles[2], NULL, /* Game Logic Function */, NULL);
-		pthread_create(&thread_handles[3], NULL, /* Graphics Funciton */, NULL);
+		pthread_create(&thread_handles[0], NULL, inputCapture(), NULL);
+		pthread_create(&thread_handles[1], NULL, checkCollisions(), NULL);
+		pthread_create(&thread_handles[2], NULL, updateGame(), NULL);
+		pthread_create(&thread_handles[3], NULL, screenDraw(), NULL);
 
 
 		
